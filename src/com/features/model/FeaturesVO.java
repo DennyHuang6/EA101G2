@@ -32,6 +32,11 @@ public class FeaturesVO implements Serializable{
 	public void setFeaName(String feaname) {
 		this.feaName = feaname;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 	
 	
 	

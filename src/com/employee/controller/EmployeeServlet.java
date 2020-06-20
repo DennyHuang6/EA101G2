@@ -190,7 +190,6 @@ public class EmployeeServlet extends HttpServlet {
 				Integer eStatus = null;
 				try {
 					eStatus = new Integer(req.getParameter("eStatus").trim());
-					System.out.println(eStatus);
 				}catch(Exception e) {
 					eStatus = 0;
 					errorMsgs.add("員工狀態: 請選擇");
@@ -199,34 +198,36 @@ public class EmployeeServlet extends HttpServlet {
 
 //未完成////////////////////////////////////////////////////////////////////////
 				//權限增加
-				//未勾選的權限直接刪除(先清空再刪除)
+				//未勾選的權限直接刪除(先清空再刪除?)
 				String[] feanoArr = req.getParameterValues("feano");
 				
-				Set<PermissionVO> perVOset = new HashSet<>();
+				List<PermissionVO> perVOlist = new ArrayList<>();
 				try {
 					if(feanoArr != null) {
 						System.out.println("feanoArr: " + Arrays.toString(feanoArr));
 						
+						//權限加入set
 						for(String perArr:feanoArr) {
 							PermissionVO perVO = new PermissionVO();
 							perVO.setEmpno(empno);
 							perVO.setFeano(perArr);
 							
-							perVOset.add(perVO);
+							perVOlist.add(perVO);
 						}
-					}else if(feanoArr == null ) {
-						System.out.println("feanoArr: " + Arrays.toString(feanoArr));
-//未完成
-//						for(String perArr: feanoArr) {
-//							
-//						}
 					}
+//					else if(feanoArr == null ) {
+//						System.out.println("feanoArr: " + Arrays.toString(feanoArr));
+////未完成
+////						for(String perArr: feanoArr) {
+////							
+////						}
+//					}
 				}catch (NullPointerException npe){
 					System.out.println("權限未新增" + npe.getMessage());
 //					errorMsgs.add(npe.getMessage());
 				}
-				System.out.println("perVOset size: " + perVOset.size());
-//////////////////////////////////////////////////////////////////////////
+				System.out.println("perVOset size: " + perVOlist.size());
+//以上未完成/////////////////////////////////////////////////////////////////////
 				
 				EmployeeVO empVO = new EmployeeVO();
 				empVO.setEmpno(empno);
@@ -249,15 +250,35 @@ public class EmployeeServlet extends HttpServlet {
 				/***********2.開始修改資料***********/
 //以下未完成，先刪除權限再新增//////////////////////////////////////////////////
 //2.1權限修改
+				//比對所有功能
 				FeaturesService feaSvc = new FeaturesService();
-				
-				feaSvc.getOneFeatures(feano);
+				List<FeaturesVO> feaVOlist = feaSvc.getAll();
+				int i = 0;
 				
 				PermissionService perSvc = new PermissionService();
-//				perSvc.deletePermission(perVO.getEmpno(), feano);
-				for(PermissionVO perVO: perVOset) {
+//				
+				for(PermissionVO perVO: perVOlist) {
 					
-					perSvc.addPermission(perVO.getEmpno(), perVO.getFeano());
+					try {
+//					功能物件的feano比對權限物件的feano
+//					perSvc.deletePermission(empno, feaVOlist.get(i).getFeano());
+					perSvc.addPermission(empno, perVO.getFeano());
+//					String feanolist = feaVOlist.get(i).getFeano();
+//					System.out.println("feanolist: " + feanolist);
+//					String feano = perVO.getFeano();
+//					System.out.println("feano: " + feano);
+//					if(feanolist == feano) {
+//						perSvc.addPermission(empno, feano);
+//					}
+//					else {
+//						//刪除權限
+//						perSvc.deletePermission(empno, feanolist);
+//					}
+					i++;
+					}catch(Exception e) {
+						System.out.println(e.getMessage());
+					}
+					
 				}
 //以上未完成//////////////////////////////////////////////////
 				
@@ -267,7 +288,7 @@ public class EmployeeServlet extends HttpServlet {
 				System.out.println("一筆員工基本資料修改成功");
 				/***********3.修改完成*************/
 				req.setAttribute("employeeVO", empVO);
-				req.setAttribute("permissionVO", perVOset);
+				req.setAttribute("perVOlist", perVOlist);
 				String url = "/back-end/employee/listOneEmployee.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);

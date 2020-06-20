@@ -223,6 +223,7 @@ public class FeaturesJDBCDAO implements FeaturesDAO_interface{
 		
 		//select all
 		List<FeaturesVO> list = dao.getAll();
+		System.out.println(list.get(3).getFeano());
 		for(FeaturesVO fea : list) {
 			System.out.println(fea.getFeano());
 			System.out.println(fea.getFeaName());

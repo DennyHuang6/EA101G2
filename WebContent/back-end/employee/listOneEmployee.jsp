@@ -3,10 +3,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.employee.model.*"%>
 <%@ page import="com.permission.model.*"%>
+<%@ page import="java.util.*" %>
 
 <%
 	EmployeeVO employeeVO = (EmployeeVO) request.getAttribute("employeeVO");
-	PermissionVO permissionVO = (PermissionVO) request.getAttribute("permissionVO");
+	Object perVOobj = request.getAttribute("perVOlist");
 	//EmpServlet.java(Concroller), 存入req的employeeVO物件
 	//EmpServlet.java(Concroller), 存入req的PermissionVO物件
 %>

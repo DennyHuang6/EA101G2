@@ -1,11 +1,29 @@
 package com.employee.model;
 
+import java.sql.Connection;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import com.permission.model.PermissionVO;
 
 public class EmployeeService {
 	private EmployeeDAO_interface dao;
+	
+	//同時新增員工與權限使用
+//	private static DataSource ds = null;
+//	static {
+//		try {
+//			Context ctx = new InitialContext();
+//			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB3");
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	//////////////////
 
 	public EmployeeService() {
 		dao = new EmployeeDAO();
@@ -66,8 +84,10 @@ public class EmployeeService {
 	
 	public EmployeeVO addEmployeeWithPermission(String eAccount,String ePw,String eName,
 			String ePhone,String eEmail,byte[] ePic, String eTitle,Integer eStatus,List<PermissionVO> list) {
+//		Connection con = null;
 		
 		EmployeeVO empVO = new EmployeeVO();
+		
 		empVO.seteAccount(eAccount);
 		empVO.setePw(ePw);
 		empVO.seteName(eName);
@@ -76,6 +96,8 @@ public class EmployeeService {
 		empVO.setePic(ePic);
 		empVO.seteTitle(eTitle);
 		empVO.seteStatus(eStatus);
+		
+		dao.insertWithPermission(empVO, list);
 		
 //		dao.insert2(empVO,list);
 		

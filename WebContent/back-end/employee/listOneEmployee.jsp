@@ -7,7 +7,8 @@
 
 <%
 	EmployeeVO employeeVO = (EmployeeVO) request.getAttribute("employeeVO");
-	Object perVOobj = request.getAttribute("perVOlist");
+	List<PermissionVO> perVOlist = (ArrayList<PermissionVO>) request.getAttribute("perVOlist");
+	System.out.println("perVOlist: " + perVOlist.toString());
 	//EmpServlet.java(Concroller), 存入req的employeeVO物件
 	//EmpServlet.java(Concroller), 存入req的PermissionVO物件
 %>
@@ -139,11 +140,16 @@
 												<div class="row justify-content-md-center">
 												
 													<c:forEach var="feaVO" items="<%=feaSvc.getAll() %>">
+													<c:forEach var="perVO" items="${perVOlist }">
 														<div class="" style="width:50%;">
+<!-- 															<label><input type="checkbox" class="form-check-input" id="features"  -->
+<%-- 															value="${feaVO.feano}" ${(feaVO.feano == perVO.feano)? 'selected':'' } disabled=true>${feaVO.feaName}</label> --%>
+<!-- 															<br/> -->
 															<label><input type="checkbox" class="form-check-input" id="features" 
-															value="${feaVO.feano}" ${(feaVO.feano == permissionVO.feano)? 'selected':'' } disabled=true>${feaVO.feaName}</label>
+															value="${perVO.feano}" disabled=true>${feaVO.feaName}</label>
 															<br/>
 														</div>
+													</c:forEach>
 													</c:forEach>
 												</div>
 											</div>
@@ -152,8 +158,6 @@
 									</tr>
 								</thead>
 							</table>
-							
-							
 			
 						</div>
 					</div>

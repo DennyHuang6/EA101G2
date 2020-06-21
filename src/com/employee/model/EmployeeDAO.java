@@ -9,7 +9,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.permission.model.PermissionJDBCDAO;
+import com.permission.model.PermissionDAO;
 import com.permission.model.PermissionVO;
 
 public class EmployeeDAO implements EmployeeDAO_interface{
@@ -272,7 +272,7 @@ public class EmployeeDAO implements EmployeeDAO_interface{
 		return list;
 	}
 
-	//for backlogin
+	//for backlogin.jsp
 	@Override
 	public EmployeeVO findBy_eAccount_ePw(String eAccount, String ePw) {
 		
@@ -372,7 +372,8 @@ public class EmployeeDAO implements EmployeeDAO_interface{
 			rs.close();
 			
 			//同時新增權限(permission)
-			PermissionJDBCDAO dao = new PermissionJDBCDAO();
+//此處改為PermissionDAO(原為PermissionJDBCDAO)
+			PermissionDAO dao = new PermissionDAO();
 			System.out.println("list.size()-A=" + list.size());
 			for(PermissionVO aPer: list) {
 //				System.out.println("next_empno: " + next_empno);

@@ -149,7 +149,7 @@
 										<select name="eStatus" class="custom-select d-block w-100">
 											<option name="" value="0">離職</option>
 											<option name="" value="1" selected="true">在職</option> 		
-											<option value="2">留職停薪</option>				
+											<option name="" value="2">留職停薪</option>				
 										</select> 
 									</td>
 								</tr>

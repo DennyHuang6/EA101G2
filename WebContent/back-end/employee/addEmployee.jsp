@@ -5,11 +5,10 @@
 <%@ page import="com.permission.model.*"%>
 <%@ page import="com.features.model.*"%>
 
-
 <%
 	EmployeeVO empVO = (EmployeeVO) request.getAttribute("employeeVO");
-	FeaturesVO feaVO = (FeaturesVO) request.getAttribute("ferturesVO");
-	PermissionVO perVO = (PermissionVO) request.getAttribute("permissionVO");
+// 	FeaturesVO feaVO = (FeaturesVO) request.getAttribute("ferturesVO");
+// 	PermissionVO perVO = (PermissionVO) request.getAttribute("permissionVO");
 %>
 
 <html>
@@ -162,7 +161,7 @@
 									</tr>
 									
 <jsp:useBean id="feaSvc" scope="page" class="com.features.model.FeaturesService"/>
-<jsp:useBean id="perSvc" scope="page" class="com.permission.model.PermissionService"/>
+<%-- <jsp:useBean id="perSvc" scope="page" class="com.permission.model.PermissionService"/> --%>
 									<tr>
 										<th class="align-middle table-primary" scope="col">員工權限</th>
 										<td class="align-items-center">
@@ -170,7 +169,7 @@
 												<div class="row justify-content-md-center">
 													<c:forEach var="feaVO" items="<%=feaSvc.getAll() %>">
 														<div class="" style="width:50%;">
-															<label><input type="checkbox" class="form-check-input" name="features" 
+															<label><input type="checkbox" class="form-check-input" name="feanos" 
 															value="${feaVO.feano}">${feaVO.feaName}</label>
 															<br/>
 														</div>
@@ -194,7 +193,6 @@
 			</div>
 		</div>
 	</div>
-	
 
 	
 	<br>

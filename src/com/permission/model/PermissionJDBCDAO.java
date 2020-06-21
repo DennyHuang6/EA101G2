@@ -1,9 +1,5 @@
 package com.permission.model;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,10 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import com.employee.model.EmployeeJDBCDAO;
-import com.employee.model.EmployeeVO;
 
 /*
 SELECT EMPLOYEE.EMPNO, EMPLOYEE.ENAME ,PERMISSION.FEANO FROM EMPLOYEE 
@@ -272,7 +264,6 @@ public class PermissionJDBCDAO implements PermissionDAO_interface{
 		perVO1.setFeano("F0010");
 		dao.insert(perVO1);
 		System.out.println("新增成功");
-		
 		
 		//刪除，測試成功
 //		dao.delete("E0000009", "F0030");

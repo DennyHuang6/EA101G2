@@ -197,8 +197,8 @@ public class EmployeeServlet extends HttpServlet {
 				
 
 //未完成////////////////////////////////////////////////////////////////////////
-				//權限增加
-				//未勾選的權限直接刪除(先清空再刪除?)
+//權限增加
+//未勾選的權限直接刪除(先清空再刪除?)
 				String[] feanoArr = req.getParameterValues("feano");
 				
 				List<PermissionVO> perVOlist = new ArrayList<>();
@@ -215,19 +215,12 @@ public class EmployeeServlet extends HttpServlet {
 							perVOlist.add(perVO);
 						}
 					}
-//					else if(feanoArr == null ) {
-//						System.out.println("feanoArr: " + Arrays.toString(feanoArr));
-////未完成
-////						for(String perArr: feanoArr) {
-////							
-////						}
-//					}
 				}catch (NullPointerException npe){
 					System.out.println("權限未新增" + npe.getMessage());
 //					errorMsgs.add(npe.getMessage());
 				}
 				System.out.println("perVOset size: " + perVOlist.size());
-//以上未完成/////////////////////////////////////////////////////////////////////
+//以上未完成?/////////////////////////////////////////////////////////////////////
 				
 				EmployeeVO empVO = new EmployeeVO();
 				empVO.setEmpno(empno);
@@ -248,7 +241,7 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				
 				/***********2.開始修改資料***********/
-//以下未完成，先刪除權限再新增//////////////////////////////////////////////////
+//以下未完成，只能新增不能刪除，作法：先刪除權限再新增，修改防呆未做//////////////////////////////////////////////////
 //2.1權限修改
 				//比對所有功能
 				FeaturesService feaSvc = new FeaturesService();
@@ -257,9 +250,11 @@ public class EmployeeServlet extends HttpServlet {
 				
 				PermissionService perSvc = new PermissionService();
 //				
+				
 				for(PermissionVO perVO: perVOlist) {
 					
 					try {
+						
 //					功能物件的feano比對權限物件的feano
 //					perSvc.deletePermission(empno, feaVOlist.get(i).getFeano());
 					perSvc.addPermission(empno, perVO.getFeano());
@@ -323,7 +318,7 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				
 				//password verify
-				//back-end員工新增，密碼自動生成
+//back-end員工新增，密碼自動生成
 //				String ePw = req.getParameter("ePw");
 				String ePw = UUID.randomUUID().toString().substring(0, 8);
 //				String ePwReg = "[\\w]{1,10}";
@@ -367,7 +362,7 @@ public class EmployeeServlet extends HttpServlet {
 				InputStream in = ePicPart.getInputStream();
 				ePicArr = new byte[in.available()];
 				if(in.available() == 0){
-					//沒有給他預設圖片
+					//使用者沒上傳，給他預設圖片
 					in = getServletContext().getResourceAsStream("/images/user-circle.png");
 					ePicArr = new byte[in.available()];
 					System.out.println("上傳預設圖片");
@@ -392,22 +387,23 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				
 //權限增加
-//未完成
-				String[] features = req.getParameterValues("features");
-				System.out.println(Arrays.toString(features));
+//完成/////////////////////////////////////////////////////
+				String[] feanoArr = req.getParameterValues("feanos");
+				System.out.println("feanoArr: " + feanoArr);
+				System.out.println("得到的權限: " + Arrays.toString(feanoArr));
 				
-				PermissionVO perVO = new PermissionVO();
+				PermissionService perSvc = new PermissionService();
+				List<PermissionVO> perVOlist = new ArrayList<>();
 				
-				
-				//權限
-//				for(String feaArr:features) {
-////					perVO.setEmpno(empno);
-////					perVO.setFeano(feano);
-//					PermissionService perSvc = new PermissionService();
-////					perVO = perSvc.addPermission(empno, feano);
-//				}
-//				System.out.println("權限新增成功");
+				//有權限才進入做寫入，暫存list
+				if(feanoArr != null) {
 
+					for(String pers:feanoArr) {
+						PermissionVO perVO = new PermissionVO();
+						perVO.setFeano(pers);
+						perVOlist.add(perVO);
+					}
+				}
 				
 				EmployeeVO empVO = new EmployeeVO();
 				empVO.seteAccount(eAccount);
@@ -429,12 +425,19 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/**********2.開始新增資料***************/
 				EmployeeService empSvc = new EmployeeService();
-empVO = empSvc.addEmployee(eAccount, ePw, eName, ePhone, eEmail, ePicArr, eTitle, eStatus);
-				System.out.println("一筆資料新增成功");
+				if(feanoArr != null) {
+					empVO = empSvc.addEmployeeWithPermission(eAccount, ePw, eName, ePhone, eEmail, ePicArr, eTitle, eStatus, perVOlist);
+					System.out.println("一位員工與權限同時新增成功");
+					
+				}else {
+					empVO = empSvc.addEmployee(eAccount, ePw, eName, ePhone, eEmail, ePicArr, eTitle, eStatus);
+					System.out.println("一筆員工資料新增成功");
+				}
 				
+//此處為同時新增employee和permission，20200621測試成功，新增員工不增加權限也成功
+///////////////////////////////////////////////////////////////
 				/**********2.1寄送密碼給新使用者*********/
 				//寄送郵件給新使用者
-//				String passRandom = UUID.randomUUID().toString().substring(0, 8);
 				String messageText = "Hello! " + eName + " 請謹記此密碼: " + ePw + "\n" +" (已經啟用)"; 
 				MailService mailService = new MailService();
 				mailService.sendMail(eEmail, "密碼通知", messageText);

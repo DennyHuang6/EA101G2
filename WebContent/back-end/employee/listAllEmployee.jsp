@@ -3,11 +3,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.employee.model.*"%>
+<%@ page import="com.permission.model.*"%>
 
 <%
 	EmployeeService empSvc = new EmployeeService();
 	List<EmployeeVO> list = empSvc.getAll();
 	pageContext.setAttribute("list", list);
+	
+	PermissionService perSvc = new PermissionService();
+
 %>
 
 <html>
@@ -97,17 +101,18 @@ h4 {
 						</div>
 					</div>
 			
-					<div class="table-responsive">
+					<div class="table-responsive-xl">
 						<table class="table table-striped table-bordered table-hover table-sm text-center justify-content-center">
 							<tr class="table-primary">
 								<th class="">員工編號</th>
 								<th class="">員工帳號</th>
-								<th class="">員工密碼</th>
+<!-- 								<th class="">員工密碼</th> -->
 								<th class="">員工姓名</th>
 								<th class="">員工電話</th>
 								<th class="">EMAIL</th>
 								<th class="">圖片</th>
 								<th class="">職稱</th>
+								<th class="">權限</th>
 								<th class="">狀態</th>
 								<th class="">修改</th>
 							</tr>
@@ -118,7 +123,7 @@ h4 {
 								<tr>
 									<td class="align-middle">${employeeVO.empno}</td>
 									<td class="align-middle">${employeeVO.eAccount}</td>
-									<td class="align-middle">${employeeVO.ePw}</td>
+<%-- 									<td class="align-middle">${employeeVO.ePw}</td> --%>
 									<td class="align-middle">${employeeVO.eName}</td>
 									<td class="align-middle">${employeeVO.ePhone}</td>
 									<td class="align-middle">${employeeVO.eEmail}</td>
@@ -126,7 +131,16 @@ h4 {
 										<img width=100 height=100
 										src="<%=request.getContextPath()%>/back-end/employee/epicshow.do?empno=${employeeVO.empno}" /></td>
 									<td class="align-middle">${employeeVO.eTitle}</td>
-									<td class="align-middle">${employeeVO.eStatus}</td>
+									<td class="align-middle"></td>
+									
+									<td class="align-middle">
+										<select name="eStatus" class="" disabled>
+											<option name="" value="0">離職</option>
+											<option name="" value="1">在職</option>
+											<option name="" value="2">留職停薪</option>
+										</select>
+<%-- 										${employeeVO.eStatus} --%>
+									</td>
 									<td class="align-middle">
 										<FORM METHOD="post"
 											ACTION="${pageContext.request.contextPath}/back-end/employee/employee.do">

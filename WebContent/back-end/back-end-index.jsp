@@ -37,6 +37,12 @@
 <body background="${pageContext.request.contextPath}/images/back-end/back-bg.jpg">
 
 	  <div class="container-fluid" style="hegiht:100vh;">
+	  	
+	  	<div class="row" style="height:40px;">
+	  		<img style="height:auto; width:100%;" class="img-fluid" src="${pageContext.request.contextPath}/images/back-end/star_bg_cut.png">
+<!-- 	  		<div class="col-fluid" style="height:40px; background-color=#F00;"></div> -->
+	  	</div>
+	  	
 	  	<div class="row" >
 	  		<div class="col-2 bg-secondary text-light border border-dark border-right">
 	  		

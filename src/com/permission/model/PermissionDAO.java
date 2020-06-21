@@ -1,7 +1,6 @@
 package com.permission.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +11,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import com.employee.model.EmployeeVO;
 
 public class PermissionDAO implements PermissionDAO_interface {
 	private static DataSource ds = null;
@@ -210,11 +207,10 @@ public class PermissionDAO implements PermissionDAO_interface {
 	}
 
 	@Override
-	public void insert2(PermissionVO permissionVO, Connection con) {
+	public void insert2(PermissionVO permissionVO, java.sql.Connection con) {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setString(1, permissionVO.getEmpno());
@@ -234,7 +230,7 @@ public class PermissionDAO implements PermissionDAO_interface {
 				}
 			}
 			throw new RuntimeException("A database error occured." + se.getMessage());
-			//Clean up JDBC resources
+//Clean up DAO resources
 		} finally {
 			if(pstmt != null) {
 				try {

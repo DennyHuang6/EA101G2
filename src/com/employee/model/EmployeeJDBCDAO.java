@@ -507,6 +507,7 @@ public class EmployeeJDBCDAO implements EmployeeDAO_interface {
 		perList.add(per7);
 		perList.add(per8);
 		
+		//此處是進入資料庫，Servlet新增步驟的2......
 		dao.insertWithPermission(emp1, perList);
 		
 		// insert

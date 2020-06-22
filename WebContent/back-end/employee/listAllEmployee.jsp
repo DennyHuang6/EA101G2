@@ -4,6 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.employee.model.*"%>
 <%@ page import="com.permission.model.*"%>
+<%@ page import="com.features.model.*"%>
 
 <%
 	EmployeeService empSvc = new EmployeeService();
@@ -11,7 +12,12 @@
 	pageContext.setAttribute("list", list);
 	
 	PermissionService perSvc = new PermissionService();
+	List<PermissionVO> perlist = perSvc.getAll();
+	pageContext.setAttribute("perlist", perlist);
 
+// 	FeaturesService feaSvc = new FeaturesService();
+// 	List<FeaturesVO> fealist = feaSvc.getAll();
+// 	pageContext.setAttribute("fealist", fealist);
 %>
 
 <html>
@@ -85,7 +91,7 @@ h4 {
 			<div id="welcome">
 			
 				<%-- 錯誤表列 --%>
-				<div class="container">
+				<div class="container-fluid">
 					<c:if test="${not empty errorMsgs}">
 						<font style="color: red">請修正以下錯誤:</font>
 						<ul>
@@ -101,38 +107,49 @@ h4 {
 						</div>
 					</div>
 			
-					<div class="table-responsive-xl">
+					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover table-sm text-center justify-content-center">
 							<tr class="table-primary">
-								<th class="">員工編號</th>
-								<th class="">員工帳號</th>
-<!-- 								<th class="">員工密碼</th> -->
-								<th class="">員工姓名</th>
-								<th class="">員工電話</th>
-								<th class="">EMAIL</th>
-								<th class="">圖片</th>
-								<th class="">職稱</th>
-								<th class="">權限</th>
-								<th class="">狀態</th>
-								<th class="">修改</th>
+								<th scope="row" class="text-nowrap">員工編號</th>
+								<th scope="row" class="text-nowrap">圖片</th>
+								<th scope="row" class="text-nowrap">員工帳號</th>
+								<th scope="row" class="text-nowrap">員工姓名</th>
+								<th scope="row" class="text-nowrap">員工電話</th>
+								<th scope="row" class="text-nowrap">EMAIL</th>
+								<th scope="row" class="text-nowrap">職稱</th>
+								<th scope="row" class="text-nowrap">權限</th>
+								<th scope="row" class="text-nowrap">狀態</th>
+								<th scope="row" class="text-nowrap">修改</th>
 							</tr>
 							<%@ include file="page1.file"%>
 							<c:forEach var="employeeVO" items="${list}" begin="<%=pageIndex%>"
 								end="<%=pageIndex+rowsPerPage-1%>">
 			
 								<tr>
-									<td class="align-middle">${employeeVO.empno}</td>
+									<th scope="row" class="align-middle">${employeeVO.empno}</th>
+									<td class="align-middle">
+										<img width=100 height=100
+										src="<%=request.getContextPath()%>/back-end/employee/epicshow.do?empno=${employeeVO.empno}" /></td>
 									<td class="align-middle">${employeeVO.eAccount}</td>
 <%-- 									<td class="align-middle">${employeeVO.ePw}</td> --%>
 									<td class="align-middle">${employeeVO.eName}</td>
 									<td class="align-middle">${employeeVO.ePhone}</td>
 									<td class="align-middle">${employeeVO.eEmail}</td>
-									<td class="align-middle">
-										<img width=100 height=100
-										src="<%=request.getContextPath()%>/back-end/employee/epicshow.do?empno=${employeeVO.empno}" /></td>
 									<td class="align-middle">${employeeVO.eTitle}</td>
-									<td class="align-middle"></td>
-									
+									<td class="align-middle">
+										
+										
+<jsp:useBean id="feaSvc" scope="page" class="com.features.model.FeaturesService"/>
+										<c:forEach var="permissionVO" items="${perlist}">
+											<c:if test="${employeeVO.empno == permissionVO.empno}">
+												 <c:forEach var="featuresVO" items="${feaSvc.all}">
+													 <c:if test="${featuresVO.feano == permissionVO.feano}">
+													 		<div class="">${featuresVO.feaName}</div>
+													 </c:if>
+												 </c:forEach>
+											</c:if>
+										</c:forEach>
+									</td>
 									<td class="align-middle">
 										<select name="eStatus" class="" disabled>
 											<option name="" value="0">離職</option>

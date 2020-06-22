@@ -206,7 +206,7 @@ public class EmployeeServlet extends HttpServlet {
 					if(feanoArr != null) {
 						System.out.println("feanoArr: " + Arrays.toString(feanoArr));
 						
-						//權限加入set
+						//權限加入list
 						for(String perArr:feanoArr) {
 							PermissionVO perVO = new PermissionVO();
 							perVO.setEmpno(empno);
@@ -241,42 +241,25 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				
 				/***********2.開始修改資料***********/
-//以下未完成，只能新增不能刪除，作法：先刪除權限再新增，修改防呆未做//////////////////////////////////////////////////
+//以下完成//////////////////////////////////////////////////
 //2.1權限修改
 				//比對所有功能
 				FeaturesService feaSvc = new FeaturesService();
 				List<FeaturesVO> feaVOlist = feaSvc.getAll();
-				int i = 0;
 				
 				PermissionService perSvc = new PermissionService();
-//				
 				
-				for(PermissionVO perVO: perVOlist) {
-					
-					try {
-						
-//					功能物件的feano比對權限物件的feano
-//					perSvc.deletePermission(empno, feaVOlist.get(i).getFeano());
-					perSvc.addPermission(empno, perVO.getFeano());
-//					String feanolist = feaVOlist.get(i).getFeano();
-//					System.out.println("feanolist: " + feanolist);
-//					String feano = perVO.getFeano();
-//					System.out.println("feano: " + feano);
-//					if(feanolist == feano) {
-//						perSvc.addPermission(empno, feano);
-//					}
-//					else {
-//						//刪除權限
-//						perSvc.deletePermission(empno, feanolist);
-//					}
-					i++;
-					}catch(Exception e) {
-						System.out.println(e.getMessage());
-					}
-					
+				for(FeaturesVO feaVO: feaVOlist) {
+					perSvc.deletePermission(empno, feaVO.getFeano());
 				}
-//以上未完成//////////////////////////////////////////////////
 				
+				for(PermissionVO perVO:perVOlist) {
+					if(empno == perVO.getEmpno())
+						perSvc.addPermission(empno, perVO.getFeano());
+				}
+				
+//以上完成//////////////////////////////////////////////////
+				System.out.println(perSvc.getOnePermission(empno));
 				//2.2員工資料修改
 				EmployeeService empSvc = new EmployeeService();
 				empSvc.updateEmployee(eAccount, ePw, eName, ePhone, eEmail, ePic, eTitle, eStatus,empno);

@@ -113,11 +113,7 @@
 										<td><input type="TEXT" name="eAccount" size="10" class="form-control"
 											 value="<%= (empVO ==null ) ? "abc" : empVO.geteAccount()%>"></td>
 									</tr>
-			<!-- 							<tr> -->
-			<!-- 								<th class="align-middle table-primary" scope="col">員工密碼</th> -->
-			<!-- 								<td><input type="password" name="ePw" size="10" -->
-			<!-- 									value="123" class="form-control" /></td> -->
-			<!-- 							</tr> -->
+									
 									<tr>
 										<th class="align-middle table-primary" scope="col">員工姓名</th>
 										<td><input type="TEXT" name="eName" size="20" class="form-control" 

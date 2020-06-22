@@ -7,11 +7,12 @@
 
 <%
 	EmployeeVO employeeVO = (EmployeeVO) request.getAttribute("employeeVO");
-	List<PermissionVO> perlist = (ArrayList<PermissionVO>) request.getAttribute("perVOlist");
+// 	List<PermissionVO> perlist = 
+//(ArrayList<PermissionVO>) request.getAttribute("perVOlist");
 	
-	System.out.println("perVOlist: " + perlist.toString());
+// 	System.out.println("perVOlist: " + perlist.toString());
 // 	for(PermissionVO aper : perlist){
-// 		System.out.println("perlist.get: " aper.getEmpno());
+// 		System.out.println("perlist.get: " + aper.getEmpno());
 // 	}
 	//EmpServlet.java(Concroller), 存入req的employeeVO物件
 	//EmpServlet.java(Concroller), 存入req的PermissionVO物件
@@ -144,18 +145,18 @@
 												<div class="row justify-content-md-center">
 												
 													<c:forEach var="feaVO" items="${feaSvc.all }">
+														<c:forEach var="perVO" items="${perVOlist}">
+															<c:if test="${perVO.feano == feaVO.feano }">
 														<div class="" style="width:50%;">
-														<c:forEach var="perVO" items="${perlist}">
-															<c:if test="${perVO.empno == employeeVO.empno }">
 <!-- 															<label><input type="checkbox" class="form-check-input" id="features"  -->
 <%-- 															value="${feaVO.feano}" ${(feaVO.feano == perVO.feano)? 'selected':'' } disabled=true>${feaVO.feaName}</label> --%>
 <!-- 															<br/> -->
 																<label><input type="checkbox" class="form-check-input" id="features" 
-																value="${perVO.feano}" disabled=true>${feaVO.feaName}</label>
+																value="${perVO.feano}" disabled=true checked>${feaVO.feaName}</label>
 																<br/>
+														</div>
 															</c:if>
 														</c:forEach>
-														</div>
 													</c:forEach>
 												</div>
 											</div>
